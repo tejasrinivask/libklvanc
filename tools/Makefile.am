@@ -23,7 +23,6 @@ SRC += genscte104.c
 SRC += gensmpte2038.c
 SRC += eia708.c
 SRC += smpte12_2.c
-SRC += smpte2038_smpte12_2_extractor.c
 SRC += afd.c
 SRC += udp.c
 SRC += url.c
