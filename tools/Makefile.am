@@ -23,6 +23,7 @@ SRC += genscte104.c
 SRC += gensmpte2038.c
 SRC += eia708.c
 SRC += smpte12_2.c
+SRC += smpte2038_smpte12_2_extractor.c
 SRC += afd.c
 SRC += udp.c
 SRC += url.c
@@ -38,6 +39,7 @@ bin_PROGRAMS += klvanc_genscte104
 bin_PROGRAMS += klvanc_gensmpte2038
 bin_PROGRAMS += klvanc_eia708
 bin_PROGRAMS += klvanc_smpte12_2
+bin_PROGRAMS += klvanc_smpte2038_smpte12_2_extractor
 bin_PROGRAMS += klvanc_afd
 
 klvanc_util_SOURCES = $(SRC)
@@ -48,6 +50,7 @@ klvanc_genscte104_SOURCES = $(SRC)
 klvanc_gensmpte2038_SOURCES = $(SRC)
 klvanc_eia708_SOURCES = $(SRC)
 klvanc_smpte12_2_SOURCES = $(SRC)
+klvanc_smpte2038_smpte12_2_extractor_SOURCES = smpte2038_smpte12_2_extractor.c udp.c url.c ts_packetizer.c klringbuffer.c pes_extractor.c
 klvanc_afd_SOURCES = $(SRC)
 
 libklvanc_noinst_includedir = $(includedir)

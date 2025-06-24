@@ -1,0 +1,12 @@
+prefix=/usr/local
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+
+Name: libklvanc
+Description: Kernel Labs Library for processing Vertical Ancillary Data (VANC)
+Version: 1.0
+Libs: -L${libdir} -lklvanc
+Libs.private:  -lpthread -lstdc++ -lm -lc
+Cflags: -I${includedir} -I${includedir}/libklvanc
+URL: https://github.com/stoth68000/libklvanc.git
