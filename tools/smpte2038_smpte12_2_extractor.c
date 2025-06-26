@@ -31,6 +31,7 @@
 #include <signal.h>
 #include <sys/time.h>
 #include <libklvanc/vanc.h>
+#include <libklvanc/vanc-checksum.h>
 #include "udp.h"
 #include "url.h"
 #include "pes_extractor.h"
@@ -149,7 +150,7 @@ static pes_extractor_callback pes_cb(void *cb_context, uint8_t *buf, int byteCou
 				printf("  DID = %d (0x%x) [SMPTE 12-2]\n", l->DID & 0xff, l->DID & 0xff);
 				printf("  SDID = %d (0x%x) [SMPTE 12-2]\n", l->SDID & 0xff, l->SDID & 0xff);
 				printf("  data_count = %d (0x%x)\n", l->data_count & 0xff, l->data_count & 0xff);
-				printf("  checksum_word = %d (0x%x)\n", l->checksum_word, l->checksum_word);
+				printf("  checksum_word = %d (0x%x)\n", l->checksum_word & 0xff, l->checksum_word & 0xff);
 				
 				/* Show original raw payload */
 				printf("  Original Raw Payload (10-bit words): ");
@@ -183,6 +184,26 @@ static pes_extractor_callback pes_cb(void *cb_context, uint8_t *buf, int byteCou
 						}
 					}
 					printf("\n");
+
+					/* Validate VANC checksum */
+					if (wordCount >= 7) { /* Need at least ADF(3) + DID + SDID + DC + CHECKSUM */
+						/* Skip the 3 ADF words and validate from DID onwards */
+						uint16_t *payload_words = words + 3;
+						int payload_word_count = wordCount - 3;
+
+						if (klvanc_checksum_is_valid(payload_words, payload_word_count)) {
+							printf("  VANC Checksum: VALID (calculated=0x%03x, stored=0x%03x)\n", 
+							       klvanc_checksum_calculate(payload_words, payload_word_count - 1),
+							       payload_words[payload_word_count - 1]);
+						} else {
+							uint16_t calculated = klvanc_checksum_calculate(payload_words, payload_word_count - 1);
+							uint16_t stored = payload_words[payload_word_count - 1];
+							printf("  VANC Checksum: INVALID (calculated=0x%03x, stored=0x%03x)\n",
+							       calculated, stored);
+						}
+					} else {
+						printf("  VANC Checksum: Cannot validate - insufficient words (%d)\n", wordCount);
+					}
 
 					/* Parse and decode the SMPTE 12-2 timecode */
 					printf("\n  Decoded SMPTE 12-2 Timecode:\n");
@@ -388,4 +409,4 @@ cleanup:
 int main(int argc, char *argv[])
 {
 	return _main(argc, argv);
-} 
+}
