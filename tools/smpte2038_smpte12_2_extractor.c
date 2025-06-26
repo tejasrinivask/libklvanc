@@ -148,14 +148,14 @@ static pes_extractor_callback pes_cb(void *cb_context, uint8_t *buf, int byteCou
 				printf("  horizontal_offset = %d (0x%x)\n", l->horizontal_offset, l->horizontal_offset);
 				printf("  DID = %d (0x%x) [SMPTE 12-2]\n", l->DID & 0xff, l->DID & 0xff);
 				printf("  SDID = %d (0x%x) [SMPTE 12-2]\n", l->SDID & 0xff, l->SDID & 0xff);
-				printf("  data_count = %d (0x%x)\n", l->data_count, l->data_count);
+				printf("  data_count = %d (0x%x)\n", l->data_count & 0xff, l->data_count & 0xff);
 				printf("  checksum_word = %d (0x%x)\n", l->checksum_word, l->checksum_word);
 				
 				/* Show original raw payload */
 				printf("  Original Raw Payload (10-bit words): ");
-				for (int j = 0; j < l->data_count; j++) {
+				for (int j = 0; j < (l->data_count & 0xff); j++) {
 					printf("%03x ", l->user_data_words[j]);
-					if ((j + 1) % 16 == 0 && j < l->data_count - 1) {
+					if ((j + 1) % 16 == 0 && j < (l->data_count & 0xff) - 1) {
 						printf("\n                                         ");
 					}
 				}
@@ -163,9 +163,9 @@ static pes_extractor_callback pes_cb(void *cb_context, uint8_t *buf, int byteCou
 
 				/* Show 8-bit extracted payload */
 				printf("  8-bit Extracted Payload: ");
-				for (int j = 0; j < l->data_count; j++) {
+				for (int j = 0; j < (l->data_count & 0xff); j++) {
 					printf("%02x ", l->user_data_words[j] & 0xff);
-					if ((j + 1) % 16 == 0 && j < l->data_count - 1) {
+					if ((j + 1) % 16 == 0 && j < (l->data_count & 0xff) - 1) {
 						printf("\n                            ");
 					}
 				}
