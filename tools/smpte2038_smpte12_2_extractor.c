@@ -147,9 +147,9 @@ static pes_extractor_callback pes_cb(void *cb_context, uint8_t *buf, int byteCou
 				printf("  line_number = %d (0x%x)\n", l->line_number, l->line_number);
 				printf("  c_not_y_channel_flag = %d\n", l->c_not_y_channel_flag);
 				printf("  horizontal_offset = %d (0x%x)\n", l->horizontal_offset, l->horizontal_offset);
-				printf("  DID = %d (0x%x) [SMPTE 12-2]\n", l->DID & 0xff, l->DID & 0xff);
-				printf("  SDID = %d (0x%x) [SMPTE 12-2]\n", l->SDID & 0xff, l->SDID & 0xff);
-				printf("  data_count = %d (0x%x)\n", l->data_count & 0xff, l->data_count & 0xff);
+				printf("  DID = %d (0x%x) [SMPTE 12-2]\n", l->DID & 0xfff, l->DID & 0xfff);
+				printf("  SDID = %d (0x%x) [SMPTE 12-2]\n", l->SDID & 0xfff, l->SDID & 0xfff);
+				printf("  data_count = %d (0x%x)\n", l->data_count & 0xfff, l->data_count & 0xfff);
 				printf("  checksum_word = %d (0x%x)\n", l->checksum_word & 0xff, l->checksum_word & 0xff);
 				
 				/* Show original raw payload */
