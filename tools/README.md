@@ -1,4 +1,8 @@
 To build extractor, run
 ```sh
-cd tools && make klvanc_smpte2038_smpte12_2_extractor
+cd libklvanc
+autoreconf -i
+./configure
+make
+cd tools && ls -la klvanc_smpte2038_smpte12_2_extractor
 ```
